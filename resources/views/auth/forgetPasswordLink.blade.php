@@ -17,13 +17,44 @@
     line-height: 20px;
     color: #fff;
     border-radius: 0;
-    width: 160px;
+    width: 100%;
     box-shadow: #a1a1a1 12px 12px 48px;
 }
+.bg-img {
+    background: linear-gradient(rgb(0 0 0 / 70%), rgba(0, 0, 0, 0.55)), url(/assets2/images/crickt.jpg) no-repeat;
+    width: 100% !important;
+    height: auto;
+    background-size: cover;
+    background-position: center;
+}
 
+.login-form {
+    background: #80808082;
+    padding: 50px;
+    color: #fff;
+    text-align: justify;
+}
+
+.contact-use-div.position-relative {
+    justify-content: center;
+    align-items: center;
+    display: grid;
+}
+.contact-use-div .form-control {
+    background-color: #f7f7f7;
+    border: none !important;
+    height: 45px;
+    font-size: 14px;
+    width: 300px;
+}
+.row.row-cols-lg-2.g-5 {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
 </style>
  
-<section class="banner-part sub-main-banner float-start w-100 ">
+<!-- <section class="banner-part sub-main-banner float-start w-100 ">
 
           <div class="baner-imghi">
              <img src="assets2/images/sub-banner01.jpg" alt="sub-banner"/>
@@ -40,7 +71,7 @@
                     </nav>
                </div>
             </div>
-</section>
+</section> -->
 
 
 <section class="float-start w-100 body-part pt-0 bg-img ">
@@ -48,54 +79,73 @@
 <div class="contact-page d-inline-block w-100">
    <div class="container">
 
-       <div class="row row-cols-1 row-cols-lg-2 g-5">
+       <div class="row  row-cols-lg-2 g-5">
             
             <div class="col-md-10">
                <div class="contact-use-div position-relative">
                    <!-- <h2> Contact Details </h2> -->
-                  
-                   <h2 class="mt-5" style="color: #fff, position-relative;"> Change Password </h2>
-                  <div class="card-body">
+                   <div class="login-form mt-5 mb-5">
+                    
+                   <h2 class="text-white" style="color: #fff, position-relative;"> Change Password </h2>
+                   @if (session('message'))
+                    <div class="alert alert-success">
+                        {{ session('message') }}
+                    </div>
+                @endif
+
+                          
+                     @if(Session::has('success'))
+                     <div class="alert text-success">
+                        {{ Session::get('success') }}
+                     </div>
+                  @endif
+                  @if(Session::has('error'))
+                     <div class="alert alert-error custom-error">
+                        {{ Session::get('error') }}
+                     </div>
+                  @endif
   
                       <form action="{{ route('reset.password.post') }}" method="POST">
                           @csrf
-                          <input type="hidden" name="token" value="{{ $token }}">
+                        
+                    <input type="hidden" name="token" value="{{ $token }}">
+
+                          <div class="col-lg-6 mt-2">
+                             <div class="from-group">
+                             <label>Player Email:</label>
+                                 <input type="text" name="email" value="{{ old('email') }}" class="form-control" placeholder="Email" required>
+                                 @error('email')
+                              <span class="text-danger">{{ $message }}</span>
+                              @enderror
+                             </div>
+                         </div>
+                   
+                         <div class="col-lg-6 mt-2">
+                             <div class="from-group">
+                             <label>Player Password: </label>
+                                 <input type="password" name="password" value="{{ old('password') }}"  placeholder="Enter password" class="form-control">
+                                 @error('password')
+                              <span class="text-danger">{{ $message }}</span>
+                              @enderror
+                             </div>
+                         </div>
+
+                         <div class="col-lg-6 mt-2">
+                             <div class="from-group">
+                             <label>Player Password: </label>
+                                 <input type="password" name="password_confirmation" value="{{ old('password_confirmation') }}"  placeholder="Confirm Password" class="form-control">
+                                 @error('password_confirmation')
+                              <span class="text-danger">{{ $message }}</span>
+                              @enderror
+                             </div>
+                         </div>
   
-                          <div class="form-group row">
-                              <label for="email_address" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
-                              <div class="col-md-6">
-                                  <input type="text" id="email_address" class="form-control" name="email" placeholder="Enter Email..." required autofocus>
-                                  @if ($errors->has('email'))
-                                      <span class="text-danger">{{ $errors->first('email') }}</span>
-                                  @endif
-                              </div>
-                          </div><br>
+                        
+                          <div class="mt-4">
+                            <button type="submit" class="btn comon-btn btn-success">Reset Password</button>
+                            
+                            </div>
   
-                          <div class="form-group row">
-                              <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
-                              <div class="col-md-6">
-                                  <input type="password" id="password" class="form-control" name="password" placeholder="Type Password" required autofocus>
-                                  @if ($errors->has('password'))
-                                      <span class="text-danger">{{ $errors->first('password') }}</span>
-                                  @endif
-                              </div>
-                          </div><br>
-  
-                          <div class="form-group row">
-                              <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
-                              <div class="col-md-6">
-                                  <input type="password" id="password-confirm" class="form-control" name="password_confirmation" placeholder="Confirm Password" required autofocus>
-                                  @if ($errors->has('password_confirmation'))
-                                      <span class="text-danger">{{ $errors->first('password_confirmation') }}</span>
-                                  @endif
-                              </div>
-                          </div><br>
-  
-                          <div class="col-md-6 offset-md-2">
-                              <button type="submit" class="btn comon-btn mt-4">
-                                  Reset Password
-                              </button>
-                          </div>
                       </form>
                         
                   </div>

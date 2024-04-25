@@ -21,15 +21,15 @@ use Illuminate\Validation\ValidationException;
 class UserController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next){
-            if (auth()->user() !== null && \Route::currentRouteName() != '/logout') {
-                return redirect()->back();
-            }
-            return $next($request);
-        });        
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware(function ($request, $next){
+    //         if (auth()->user() !== null && \Route::currentRouteName() != '/logout') {
+    //             return redirect()->back();
+    //         }
+    //         return $next($request);
+    //     });        
+    // }
 
 
     public function create()
@@ -172,18 +172,15 @@ class UserController extends Controller
 
         $verificationUrl = url('/verify-email/'.$user->verification_token);
         
-        // Send verification email using the appropriate Mailable class
         Mail::to($user->email)->send(new VerifyEmail($user, $verificationUrl));
 
 
-        // Create a related record in the profiles table (assuming Profile model exists)
         $profile = new Profile();
         $profile->user_id = $user->id; // Assign the user_id
         $profile->name = $request->input('name');
         $profile->email = $request->input('email');
         $profile->password = $request->input('password');
     
-        // Set other profile attributes here
         $profile->save();
 
     

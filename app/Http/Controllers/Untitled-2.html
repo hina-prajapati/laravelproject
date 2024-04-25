@@ -1,0 +1,28 @@
+<html>
+	<input type="text" class="validtaion" id="name">
+	<p id="error_name"></p>
+
+	<input type="text" class="validtaion" id="firstname">
+	<p id="error_firstname"></p>
+	<script>
+		$(document).on('click', '.validtaion', function(event) {
+			event.preventDefault();
+			var id = $(this).attr('id');
+			emailValidation(id);
+			/* Act on the event */
+		});
+
+		function emailValidation(id) {
+	    	var pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	    	var value = $('#'+id).val();
+	    	if(value.length > 0){
+	    		if (!pattern.test(value)) {
+	    			$('#register').attr('disabled','disabled');
+	    			$('.emailError').show();
+	    			$('#error_'+id).html('Invalid Email Address');
+					$('html, body').animate({scrollTop:$('#'+id).position().top}, 'slow');
+	    		}
+	    	}
+	    }
+	</script>
+</html>

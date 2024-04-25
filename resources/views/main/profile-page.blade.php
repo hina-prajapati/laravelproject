@@ -212,7 +212,7 @@
  <section class="banner-part sub-main-banner float-start w-100">
      
      <div class="baner-imghi">
-        <img src="assets2/images/sub-banner01.jpg" alt="sub-banner"/>
+        <img src="/assets2/images/sub-banner01.jpg" alt="sub-banner"/>
      </div>
 
        <div class="sub-banner">
@@ -312,7 +312,7 @@
                           ?>
                           @if($profile)
                           <li>
-                           <span class="dert"> Date Of Birth: </span>
+                           <span class="dert"> Date Of Birth </span>
                            <span>{{ $profile->datebirth ? \Carbon\Carbon::parse($profile->datebirth)->format('d-m-Y') : '' }}  - {{ $profile->age ?? '' }}  (Age)</span>
                            <!-- <span>{{ $profile->datebirth ?? '' }} - {{ $profile->age ?? '' }}  (Age)</span> -->
                           </li>
@@ -366,9 +366,13 @@
                            </li>
 
                            <li>
-    <span class="dert"> City </span>
-    <span>{{ $profile->city ? $cities->where('id', $profile->city)->first()->name : '' }}</span>
-</li>
+                            <span class="dert"> City </span>
+                            @if ($profile->city && $cities->where('id', $profile->city)->isNotEmpty())
+                                <span>{{ $cities->where('id', $profile->city)->first()->name }}</span>
+                            @else
+                                <!-- <span>No city selected</span> -->
+                            @endif
+                        </li>
 
 
                       

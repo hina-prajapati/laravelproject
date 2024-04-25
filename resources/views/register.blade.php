@@ -67,8 +67,13 @@ label{
     font-size: 15px;
     font-family: "Roboto", sans-serif;
 }
+
+.contact-use-div.position-relative {
+    background: #80808082;
+    padding: 50px;
+}
  </style>
- <section class="banner-part sub-main-banner float-start w-100">
+ <!-- <section class="banner-part sub-main-banner float-start w-100">
      
      <div class="baner-imghi">
         <img src="assets2/images/sub-banner01.jpg" alt="sub-banner"/>
@@ -86,7 +91,7 @@ label{
           </div>
        </div>
 
-</section>
+</section> -->
 
                     @if(Session::has('success'))
                         <div class="alert text-success custom-success">
@@ -115,7 +120,7 @@ label{
                <div class="contact-use-div position-relative">
                    <!-- <h2> Contact Details </h2> -->
                   
-                   <h2 class="mt-2" style="color: #fff, position-relative;"> Sign Up </h2>
+                   <h2 class="" style="color: #fff, position-relative; text-align: center;"> Sign Up </h2>
                    <form action="" method="post" enctype="multipart/form-data" name="Frm_sign" id="Frm_sign">
                      @csrf
 
@@ -182,7 +187,7 @@ label{
 
                          <div class="col-lg-12">
                              <div class="from-group" style="width: 100%;">
-                             <div class="g-recaptcha mt-4" style="width: 100% !important; text-align: center;  justify-content: center;
+                             <div class="g-recaptcha mt-4" style="width: 100% !important; display: flex; text-align: center;  justify-content: center;
 " data-sitekey={{config('services.recaptcha.key')}}></div> 
                              @error('g-recaptcha-response')
                               <span class="text-danger">{{ $message }}</span>

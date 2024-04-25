@@ -15,16 +15,33 @@ class RedirectIfAuthenticated
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string ...$guards): Response
-    {
-        $guards = empty($guards) ? [null] : $guards;
+    // public function handle(Request $request, Closure $next, string ...$guards): Response
+    // {
+    //     $guards = empty($guards) ? [null] : $guards;
 
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+    //     foreach ($guards as $guard) {
+    //         if (Auth::guard($guard)->check()) {
+    //             return redirect(RouteServiceProvider::HOME);
+    //         }
+    //     }
+
+    //     return $next($request);
+    // }
+
+
+
+        public function handle($request, Closure $next, ...$guards)
+        {
+            $guards = empty($guards) ? [null] : $guards;
+
+            foreach ($guards as $guard) {
+                if (Auth::guard($guard)->check()) {
+                    // Redirect authenticated users to the profile page
+                    return redirect()->back();
+                }
             }
+
+            return $next($request);
         }
 
-        return $next($request);
-    }
 }

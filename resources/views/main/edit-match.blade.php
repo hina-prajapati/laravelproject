@@ -81,7 +81,7 @@ img.image-img {
  <section class="banner-part sub-main-banner float-start w-100">
      
      <div class="baner-imghi">
-        <img src="assets2/images/sub-banner01.jpg" alt="sub-banner"/>
+        <img src="/assets2/images/sub-banner01.jpg" alt="sub-banner"/>
      </div>
 
        <div class="sub-banner">
@@ -90,7 +90,7 @@ img.image-img {
                <nav aria-label="breadcrumb">
                    <ol class="breadcrumb justify-content-center">
                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                   <li class="breadcrumb-item active" aria-current="page">Contact</li>
+                   <li class="breadcrumb-item active" aria-current="page">Edit Match</li>
                    </ol>
                </nav>
           </div>
@@ -118,7 +118,7 @@ img.image-img {
                     </div>
                 @endif -->
 
-                <form action="/update/{{ $posts->id }}" method="post" enctype="multipart/form-data">
+                <form  action="/update/{{ $posts->id }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method("put")
                 <div class="row mt-4">
@@ -136,8 +136,9 @@ img.image-img {
                 <div class="col-md-3 mt-3">
                 <div class="form-group">
                 <label>MyTeam:</label>
-                <input type="text" name="myTeam" value="{{ $posts['myTeam'] }}" class="form-control m-2" placeholder="My Team">
+                <input type="text" name="myTeam" id="myTeam" value="{{ $posts['myTeam'] }}" class="form-control m-2" placeholder="My Team">
                 </div>
+                <div id="myTeamErrorMsg" style="color: red;"></div>
                 @error('myTeam')
                  <div class="alert text-danger">{{ $message }}</div>
                 @enderror
@@ -146,8 +147,9 @@ img.image-img {
                 <div class="col-md-3 mt-3">
                 <div class="from-group">
                 <label>Opposition Team:</label>
-                <input type="text" name="opppsitionTeam" value="{{ $posts->opppsitionTeam }}"  class="form-control m-2" placeholder="Opposion Team">
+                <input type="text" name="opppsitionTeam" id="opppsitionTeam" value="{{ $posts->opppsitionTeam }}"  class="form-control m-2" placeholder="Opposion Team">
                 </div>
+                <div id="oppositionTeamErrorMsg" style="color: red;"></div>
                 @error('opppsitionTeam')
                  <div class="alert text-danger">{{ $message }}</div>
                 @enderror
@@ -156,8 +158,9 @@ img.image-img {
                 <div class="col-md-3 mt-3">
                 <div class="from-group">
                 <label>Tournament:</label>
-                <input type="text" name="tournament" value="{{ $posts->tournament }}"  class="form-control m-2" placeholder="tournament">
+                <input type="text" name="tournament" id="tournament" value="{{ $posts->tournament }}"  class="form-control m-2" placeholder="tournament">
                 </div>
+                <div id="tournamentError" style="color: red;"></div>
                 @error('tournament')
                  <div class="alert text-danger">{{ $message }}</div>
                 @enderror
@@ -166,8 +169,9 @@ img.image-img {
                 <div class="col-md-3 mt-3">
                 <div class="from-group">
                 <label>Vanue:</label>
-                <input type="text" name="venue" value="{{ $posts->venue }}" class="form-control m-2" placeholder="Venue">
+                <input type="text" name="venue" id="venue" value="{{ $posts->venue }}" class="form-control m-2" placeholder="Venue">
                 </div>
+                <div id="venueErrorMsg" style="color: red;"></div>
                 @error('venue')
                  <div class="alert text-danger">{{ $message }}</div>
                 @enderror
@@ -177,7 +181,6 @@ img.image-img {
                 <div class="from-group">
                 <label>Match Type:</label>
                     <div class="custom-dropdown form-control m-2">
-                    <!-- <select id="dropdown-input" name="match_type" class="dropdown-input"> -->
                     <select id="dropdown-input" name="match_type" class="dropdown-input" style="border: none;" onchange="toggleCustomInput()">
                     <option value=""> Match Type...</option>
                     <option value="Test-5 Days" {{ $posts->match_type == 'Test-5 Days' ? 'selected' : '' }}>Test-5 Days</option>
@@ -192,7 +195,6 @@ img.image-img {
                     <option value="Other" {{ $posts->match_type == 'Other' ? 'selected' : '' }}>Other</option>
                     </select>
                     <input type="text" id="custom-match-type"  name="custom_match_type" class="dropdown-input" placeholder="Type Custom Match Type..." value="{{ $posts->custom_match_type }}" style="display: none !important; width: 250px;     display: inline-block;    top: 13px !important;   left: -6px !important;     position: relative;">
-                    <!-- <input type="text" id="custom-match-type" name="custom_match_type" class="dropdown-input" placeholder="You can type here..." > -->
                     </div>
                 </div>
                 @error('match_type')
@@ -207,10 +209,11 @@ img.image-img {
                 <div class="custom-select form-control m-2">
                 <select id="type_ball" name="type_ball">
                 <option value="">Select Type</option>
-                <option value="Leather Ball"  {{ $posts->type_ball == 'Leather Ball' ? 'selected' : '' }}>Leather Ball</option>
-                <option value="Tennis Ball" {{ $posts->type_ball == 'Tennis Ball' ? 'selected' : '' }}>Tennis Ball</option>
-                <option value="Rubber Ball" {{ $posts->Rubber == 'Tennis Ball' ? 'selected' : '' }}>Rubber Ball</option>
-                </select>
+                @foreach($ballTypes as $ballType)
+                    <option value="{{ $ballType }}" {{ $posts->type_ball == $ballType ? 'selected' : '' }}>{{ $ballType }}</option>
+                @endforeach
+            </select>
+
                 </div>
                 </div>
                 @error('type_ball')
@@ -225,10 +228,11 @@ img.image-img {
                 <div class="custom-select form-control m-2">
                 <select id="select_role" name="select_role">
                 <option value="">Select Role</option>
-                <option value="Captain" {{ $posts->select_role === 'Captain' ? 'selected' : '' }}>Captain</option>
-                <option value="Vice-Captain" {{ $posts->select_role === 'Vice-Captain' ? 'selected' : '' }}>Vice-Captain</option>
-                <option value="Player" {{ $posts->select_role === 'Player' ? 'selected' : '' }}>Player</option>
-                </select>
+                @foreach($roles as $role)
+                    <option value="{{ $role }}" {{ $posts->select_role === $role ? 'selected' : '' }}>{{ $role }}</option>
+                @endforeach
+            </select>
+
                 </div>
                 </div>
                 @error('select_role')
@@ -241,7 +245,7 @@ img.image-img {
                 <div class="from-group">
                 <label>Select Result:</label>
                 <div class="custom-select form-control m-2">
-                <select name="match_result">
+                <select name="match_result" id="match_result">
                 <option value="">Match Result</option>
                 <option value="Won" {{ $posts->match_result === 'Won' ? 'selected' : '' }}>Won</option>
                 <option value="Lost" {{ $posts->match_result === 'Lost' ? 'selected' : '' }}>Lost</option>
@@ -262,20 +266,13 @@ img.image-img {
                 <div class="from-group">
                 <label>Batting Position:</label>
                 <div class="custom-select m-2">
-                <select id="batting_pos" name="batting_pos" class="form-control"> <!-- Move the class attribute outside the name attribute -->
-                    <option value="">Batting Position</option>
-                    <option value="1" {{ $posts->batting_pos === '1' ? 'selected' : '' }}>1</option>
-                    <option value="2" {{ $posts->batting_pos === '2' ? 'selected' : '' }}>2</option>
-                    <option value="3" {{ $posts->batting_pos === '3' ? 'selected' : '' }}>3</option>
-                    <option value="4" {{ $posts->batting_pos === '4' ? 'selected' : '' }}>4</option>
-                    <option value="5" {{ $posts->batting_pos === '5' ? 'selected' : '' }}>5</option>
-                    <option value="6" {{ $posts->batting_pos === '6' ? 'selected' : '' }}>6</option>
-                    <option value="7" {{ $posts->batting_pos === '7' ? 'selected' : '' }}>7</option>
-                    <option value="8" {{ $posts->batting_pos === '8' ? 'selected' : '' }}>8</option>
-                    <option value="9" {{ $posts->batting_pos === '9' ? 'selected' : '' }}>9</option>
-                    <option value="10" {{ $posts->batting_pos === '10' ? 'selected' : '' }}>10</option>
-                    <option value="DNB" {{ $posts->batting_pos === 'DNB' ? 'selected' : '' }}>DNB</option>
-                </select>
+                <select id="batting_pos" name="batting_pos" class="form-control">
+                <option value="">Batting Position</option>
+                @foreach($battingPositions as $position)
+                    <option value="{{ $position }}" {{ $posts->batting_pos == $position ? 'selected' : '' }}>{{ $position }}</option>
+                @endforeach
+            </select>
+
             </div>
 
                 </div>
@@ -337,7 +334,6 @@ img.image-img {
                 <option value="LBW" {{ $posts->select1 === 'LBW' ? 'selected' : '' }}>LBW</option>
                 <option value="Hit Wicket" {{ $posts->select1 === 'Hit Wicket' ? 'selected' : '' }}>Hit Wicket</option>
                 <option value="Retired Hurt" {{ $posts->select1 === 'Retired Hurt' ? 'selected' : '' }}>Retired Hurt</option>
-                <!-- Add other options with similar logic... -->
                 <option value="Not Out" {{ $posts->select1 === 'Not Out' ? 'selected' : '' }}>Not Out</option>
                 </select>
                 </div>
@@ -363,7 +359,6 @@ img.image-img {
                 <option value="Silly Point" {{ $posts->select2 === 'Silly Point' ? 'selected' : '' }}>Silly Point</option>
                 <option value="Third Man" {{ $posts->select2 === 'Third Man' ? 'selected' : '' }}>Third Man</option>
                 <option value="Theep Third Man" {{ $posts->select2 === 'Theep Third Man' ? 'selected' : '' }}>Theep Third Man</option>
-                <!-- Add other options with similar logic... -->
                 <option value="Gully" {{ $posts->select2 === 'Gully' ? 'selected' : '' }}>Gully</option>
                 </select>
                 </div>
@@ -438,20 +433,13 @@ img.image-img {
                 <div class="from-group">
                 <label>Fielding Position:</label>
                 <div class="custom-select form-control m-2">
-                <select name="fielding_pos">
+                <select name="fielding_pos" id="fielding_pos">
                 <option value="">Fielding Position</option>
-                <option value="Wicket Keeper" {{ $posts->fielding_pos === 'Wicket Keeper' ? 'selected' : '' }}>Wicket Keeper</option>
-                <option value="Slip" {{ $posts->fielding_pos === 'Slip' ? 'selected' : '' }}>Slip</option>
-                <option value="Long On" {{ $posts->fielding_pos === 'Long On' ? 'selected' : '' }}>Long On</option>
-                <option value="Long Off" {{ $posts->fielding_pos === 'Long Off' ? 'selected' : '' }}>Long Off</option>
-                <option value="Mid On" {{ $posts->fielding_pos === 'Mid On' ? 'selected' : '' }}>Mid On</option>
-                <option value="Mid Off" {{ $posts->fielding_pos === 'Mid Off' ? 'selected' : '' }}>Mid Off</option>
-                <option value="Cover" {{ $posts->fielding_pos === 'Cover' ? 'selected' : '' }}>Cover</option>
-                <option value="Point" {{ $posts->fielding_pos === 'Point' ? 'selected' : '' }}>Point</option>
-                <option value="Silly Point" {{ $posts->fielding_pos === 'Silly Point' ? 'selected' : '' }}>Silly Point</option>
-                <option value="Third Man" {{ $posts->fielding_pos === 'Third Man' ? 'selected' : '' }}>Third Man</option>
-                <option value="Deep Third Man" {{ $posts->fielding_pos === 'Deep Third Man' ? 'selected' : '' }}>Deep Third Man</option>
-                </select>
+                @foreach($fieldingPositions as $position)
+                    <option value="{{ $position }}" {{ $posts->fielding_pos === $position ? 'selected' : '' }}>{{ $position }}</option>
+                @endforeach
+            </select>
+
                 </div>
                 </div>
                 @error('fielding_pos')
@@ -463,7 +451,7 @@ img.image-img {
                 <div class="col-md-3 mt-3">
                 <div class="from-group">
                 <label>Number of Run Saved in Fielding:</label>
-                <input type="number" name="norsif" value="{{ $posts->norsif }}" class="form-control m-2"  placeholder="Number of Run Saved in Fielding.....">
+                <input type="number" name="norsif" id="norsif" value="{{ $posts->norsif }}" class="form-control m-2"  placeholder="Number of Run Saved in Fielding.....">
                 </div>
                 @error('norsif')
                  <div class="alert text-danger">{{ $message }}</div>
@@ -474,7 +462,7 @@ img.image-img {
                 <div class="col-md-3 mt-3">
                 <div class="from-group">
                 <label>Number Of Catches:</label>
-                <input type="number" name="noc" value="{{ $posts->noc }}" class="form-control m-2" placeholder="Number Of Catches.....">
+                <input type="number" name="noc" id="noc" value="{{ $posts->noc }}" class="form-control m-2" placeholder="Number Of Catches.....">
                 </div>
                 @error('noc')
                  <div class="alert text-danger">{{ $message }}</div>
@@ -484,7 +472,7 @@ img.image-img {
                 <div class="col-md-3 mt-3">
                 <div class="from-group">
                 <label>Number Of Runs Outs:</label>
-                <input type="number" name="norouts" value="{{ $posts->norouts }}" class="form-control m-2" placeholder="Number Of Runs Outs.....">
+                <input type="number" name="norouts" id="norouts" value="{{ $posts->norouts }}" class="form-control m-2" placeholder="Number Of Runs Outs.....">
                 </div>
                 @error('norouts')
                  <div class="alert text-danger">{{ $message }}</div>
@@ -494,7 +482,7 @@ img.image-img {
                 <div class="col-md-3 mt-3">
                 <div class="from-group">
                 <label>Number Of stumpings:</label>
-                <input type="number" name="nostump" value="{{ $posts->nostump }}" class="form-control m-2" placeholder="Number Of stumpings.....">
+                <input type="number" name="nostump" id="nostump" value="{{ $posts->nostump }}" class="form-control m-2" placeholder="Number Of stumpings.....">
                 </div>
                 @error('nostump')
                  <div class="alert text-danger">{{ $message }}</div>
@@ -504,7 +492,7 @@ img.image-img {
                 <div class="col-md-3 mt-3">
                 <div class="from-group">
                 <label>Runs Given by misfiled:</label>
-                <input type="number" name="rgbmis" value="{{ $posts->rgbmis }}" class="form-control m-2" placeholder="Runs Given by misfiled....">
+                <input type="number" name="rgbmis" id="rgbmis" value="{{ $posts->rgbmis }}" class="form-control m-2" placeholder="Runs Given by misfiled....">
                 </div>
                 @error('rgbmis')
                  <div class="alert text-danger">{{ $message }}</div>
@@ -514,7 +502,7 @@ img.image-img {
                 <div class="col-md-3 mt-3">
                 <div class="from-group">
                 <label>Catches Missed:</label>
-                <input type="number" name="cmissed" value="{{ $posts->cmissed }}" class="form-control m-2" placeholder="Catches Missed.....">
+                <input type="number" name="cmissed" id="cmissed" value="{{ $posts->cmissed }}" class="form-control m-2" placeholder="Catches Missed.....">
                 </div>
                 @error('cmissed')
                  <div class="alert text-danger">{{ $message }}</div>
@@ -524,7 +512,7 @@ img.image-img {
                 <div class="col-md-3 mt-3">
                 <div class="from-group">
                 <label>Stumpings Missed:</label>
-                <input type="number" name="stump_missed" value="{{ $posts->stump_missed }}" class="form-control m-2" placeholder="Stumpings Missed.....">
+                <input type="number" name="stump_missed" id="stump_missed" value="{{ $posts->stump_missed }}" class="form-control m-2" placeholder="Stumpings Missed.....">
                 </div>
                 @error('stump_missed')
                  <div class="alert text-danger">{{ $message }}</div>
@@ -534,7 +522,7 @@ img.image-img {
                 <div class="col-md-3 mt-3">
                 <div class="from-group">
                 <label>Run-Out Missed:</label>
-                <input type="number" name="runouts" value="{{ $posts->runouts }}" class="form-control m-2" placeholder="Run-Out Missed.....">
+                <input type="number" name="runouts" id="runouts" value="{{ $posts->runouts }}" class="form-control m-2" placeholder="Run-Out Missed.....">
                 </div>
                 @error('runouts')
                  <div class="alert text-danger">{{ $message }}</div>
@@ -600,7 +588,7 @@ img.image-img {
     </div>
 </section>
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     // JavaScript to toggle the custom input field based on the selected option
     const dropdownInput = document.getElementById('dropdown-input');
@@ -649,8 +637,6 @@ img.image-img {
         // Now, you can submit the form data to your server using AJAX or other methods.
     });
 </script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     function toggleCustomInput() {
@@ -923,6 +909,77 @@ oversBowledInput.addEventListener('input', function() {
 updateMaxWickets();
 
 
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $("input[name='myTeam']").keydown(function(){
+      $("#myTeamErrorMsg").text("");
+    });
+  
+    $("input[name='myTeam']").keyup(function(){
+      var inputValue = $(this).val();
+      if(!areOnlyCharacters(inputValue)){
+        $("#myTeamErrorMsg").text("Only characters are allowed.");
+      } else {
+        $("#myTeamErrorMsg").text("");
+      }
+    });
+    
+
+  });
+
+  $(document).ready(function(){
+    $("input[name='opppsitionTeam']").keydown(function(){
+      $("#oppositionTeamErrorMsg").text("");
+    });
+  
+    $("input[name='opppsitionTeam']").keyup(function(){
+      var inputValue = $(this).val();
+      if(!areOnlyCharacters(inputValue)){
+        $("#oppositionTeamErrorMsg").text("Only characters are allowed.");
+      } else {
+        $("#oppositionTeamErrorMsg").text("");
+      }
+    });
+});
+    
+    $(document).ready(function(){
+    $("input[name='tournament']").keydown(function(){
+      $("#tournamentError").text("");
+    });
+  
+    $("input[name='tournament']").keyup(function(){
+      var inputValue = $(this).val();
+      if(!areOnlyCharacters(inputValue)){
+        $("#tournamentError").text("Only characters are allowed.");
+      } else {
+        $("#tournamentError").text("");
+      }
+    });
+  });
+
+  $(document).ready(function(){
+    $("input[name='venue']").keydown(function(){
+      $("#venueErrorMsg").text("");
+    });
+  
+    $("input[name='venue']").keyup(function(){
+      var inputValue = $(this).val();
+      if(!areOnlyCharacters(inputValue)){
+        $("#venueErrorMsg").text("Only characters are allowed.");
+      } else {
+        $("#venueErrorMsg").text("");
+      }
+    });
+  });
+
+  function areOnlyCharacters(inputValue) {
+    var regex = /^[a-zA-Z]+$/;
+    return regex.test(inputValue);
+  }
 </script>
 
 @endsection

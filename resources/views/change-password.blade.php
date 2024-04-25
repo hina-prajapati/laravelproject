@@ -24,13 +24,25 @@
     justify-content: center;
 }
 
+.bg-img {
+    background: linear-gradient(rgb(0 0 0 / 70%), rgba(0, 0, 0, 0.55)), url(assets2/images/crickt.jpg) no-repeat;
+    width: 100% !important;
+    height: auto;
+    background-size: cover;
+    background-position: center;
+}
 .col-md-6 {
     flex: 0 0 auto;
     width: 400px;
     padding: 7px 28px;
 }
+.login-form {
+    background: #80808082;
+    padding: 50px;
+    color: #fff;
+}
  </style>
- <section class="banner-part sub-main-banner float-start w-100">
+ <!-- <section class="banner-part sub-main-banner float-start w-100">
 
           <div class="baner-imghi">
              <img src="assets2/images/sub-banner01.jpg" alt="sub-banner"/>
@@ -47,7 +59,7 @@
                     </nav>
                </div>
             </div>
-</section>
+</section> -->
 <section class="float-start w-100 body-part pt-0 bg-img ">
 
 <div class="contact-page d-inline-block w-100">
@@ -58,7 +70,8 @@
             <div class="col">
                <div class="contact-use-div position-relative">
                     <!-- <div class="">{{ __('Change Password') }}</div> -->
-
+                    <div class="login-form">
+                    <h2 class="mt-2 mb-4 text-center text-white"> Change Password </h2>
                     <form action="{{ route('update-password') }}" method="POST">
                         @csrf
                       
@@ -110,6 +123,7 @@
                             </div>
                     </form>
                 </div>
+               </div>
             </div>
         </div>
     </div>

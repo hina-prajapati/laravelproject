@@ -82,8 +82,14 @@ label{
     font-size: 15px;
     font-family: "Roboto", sans-serif;
 }
+.login-form {
+    background: #80808082;
+    padding: 50px;
+}
+
+
  </style>
- <section class="banner-part sub-main-banner float-start w-100">
+ <!-- <section class="banner-part sub-main-banner float-start w-100">
      
      <div class="baner-imghi">
         <img src="assets2/images/sub-banner01.jpg" alt="sub-banner"/>
@@ -102,7 +108,7 @@ label{
        </div>
 
 
-</section>
+</section> -->
 
 <section class="float-start w-100 body-part pt-0 bg-img">
 
@@ -110,27 +116,39 @@ label{
    <div class="container">
 
        <div class="row row-cols-1  g-5 ">
-            
+      
             <div class="col">
                <div class="contact-use-div position-relative">
                    <!-- <h2> Contact Details </h2> -->
-                  
-                   <h2 class="mt-2 mb-4"> Login </h2>
+                  <div class="login-form">
+                   <h2 class="mt-2 mb-4 text-center"> Login </h2>
                    <form action="" method="post" enctype="multipart/form-data">
                      @csrf
 
-                     @if(Session::has('success'))
-                     <div class="alert text-success">
-                        {{ Session::get('success') }}
-                     </div>
-                  @endif
-                  @if(Session::has('error'))
-                     <div class="alert alert-error custom-error">
-                        {{ Session::get('error') }}
-                     </div>
-                  @endif
-                  
+                            <!-- @if(Session::has('success'))
+                            <div class="alert alert-success">
+                                {{ Session::get('success') }}
+                            </div>
+                        @endif
+                        
+                        @if(Session::has('error'))
+                            <div class="alert alert-error custom-error">
+                                {{ Session::get('error') }}
+                            </div>
+                        @endif
 
+-->
+
+                        @if(session('success') || session('error'))
+			<div class="alert alert-{{ session('success') ? 'success' : 'danger' }} alert-dismissable" id="notification">
+			{{ session('success') ?: session('error') }}
+			</div>
+			<script>
+			setTimeout(function(){
+			document.getElementById('notification').style.display = 'none';
+			}, 5000); // Adjust the time in milliseconds (e.g., 3000 for 3 seconds)
+			</script>
+			@endif
                          <div class="col-lg-6 mt-2">
                              <div class="from-group">
                              <label>Player Email:</label>
@@ -172,6 +190,7 @@ label{
                          </div>
                   
                    </form>
+               </div>
                </div>
             </div>
        </div>

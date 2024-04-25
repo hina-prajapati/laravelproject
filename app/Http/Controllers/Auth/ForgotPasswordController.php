@@ -9,6 +9,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\PasswordChangedNotification; // Import your notification class
+
 
 class ForgotPasswordController extends Controller
 {
@@ -50,7 +52,7 @@ class ForgotPasswordController extends Controller
      {
          $request->validate([
              'email' => 'required|email|exists:users',
-             'password' => 'required|string|min:6|confirmed',
+             'password' => 'required|string|min:4|confirmed',
              'password_confirmation' => 'required'
          ]);
  
@@ -69,7 +71,9 @@ class ForgotPasswordController extends Controller
                      ->update(['password' => Hash::make($request->password)]);
 
          DB::table('password_reset_tokens')->where(['email'=> $request->email])->delete();
- 
-         return redirect('/login')->with('message', 'Your password has been changed!');
+
+         $user->notify(new PasswordChangedNotification($user));
+
+         return redirect()->route('/login')->with('success', 'Your password has been changed!');
      }
 }

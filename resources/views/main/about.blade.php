@@ -356,7 +356,7 @@
       </div>
 </section>
 
-<button type="button" class="btn btn-member" data-bs-toggle="modal" data-bs-target="#memberModal"> Become A Member </button>
+<!-- <button type="button" class="btn btn-member" data-bs-toggle="modal" data-bs-target="#memberModal"> Become A Member </button> -->
 
 
 @endsection

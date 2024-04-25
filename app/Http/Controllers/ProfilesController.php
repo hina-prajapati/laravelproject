@@ -23,20 +23,31 @@ class ProfilesController extends Controller
     // }
     public function profile(){
        
-         // Assuming you have retrieved the user's profile data before calling this method
-    $user = Auth::user();
-    $profile = $user->profile;
+        // Assuming you have retrieved the user's profile data before calling this method
+        $user = Auth::user();
+        $profile = $user->profile;
         $countries = DB::table('countries')->orderBy('name','ASC')->get();
-        $states = \App\Models\State::orderBy('name', 'ASC')->get();
+                // Assuming you have a selected country ID stored in $selectedCountryId
+        $selectedCountryId = $profile->country; // Assuming $profile->country contains the country ID
 
-    // Retrieve cities based on the user's state
-    $cities = [];
-    if ($profile && $profile->state) {
-        $cities = DB::table('cities')
-            ->where('state_id', $profile->state)
-            ->orderBy('name', 'ASC')
-            ->get();
-    }
+        $states = [];
+        if ($selectedCountryId) {
+        $states = DB::table('states')
+        ->where('country_id', $selectedCountryId)
+        ->orderBy('name', 'ASC')
+        ->get();
+        }
+        // $states = \App\Models\State::orderBy('name', 'ASC')->get();
+
+       // Retrieve cities based on the user's state
+            $cities = [];
+        if ($profile && $profile->state) {
+            $stateId = $profile->state; // Assuming $profile->state contains the state ID
+            $cities = DB::table('cities')
+                ->where('state_id', $stateId)
+                ->orderBy('name', 'ASC')
+                ->get();
+        }
 
         return view('main.profile-page', compact('countries', 'states', 'cities'));
     }
@@ -49,9 +60,27 @@ class ProfilesController extends Controller
       
         $countries = DB::table('countries')->orderBy('name','ASC')->get();
      
-        $states = \App\Models\State::orderBy('name', 'ASC')->get();
+        // $states = \App\Models\State::orderBy('name', 'ASC')->get();
       
-       $cities = DB::table('cities')->orderBy('name','ASC')->get(); 
+    //    $cities = DB::table('cities')->orderBy('name','ASC')->get(); 
+            $selectedCountryId = $profile->country; // Assuming $profile->country contains the country ID
+
+            $states = [];
+            if ($selectedCountryId) {
+            $states = DB::table('states')
+            ->where('country_id', $selectedCountryId)
+            ->orderBy('name', 'ASC')
+            ->get();
+            }
+
+            $cities = [];
+            if ($profile && $profile->state) {
+                $stateId = $profile->state; // Assuming $profile->state contains the state ID
+                $cities = DB::table('cities')
+                    ->where('state_id', $stateId)
+                    ->orderBy('name', 'ASC')
+                    ->get();
+            }
 
         if (!$user || $user->id != auth()->user()->id) {
             return redirect()->route('/login')->with('error', 'Unauthorized access');
@@ -89,6 +118,7 @@ public function update(Request $request)
         'password' => 'nullable|string|min:4',
         'cpassword' => 'nullable|same:password',
         'phone' => 'required|string|regex:/^[0-9]{10}$/',
+        
         // 'phone' => 'required|string|regex:/^\+91[0-9\s-]{10}$/|unique:users',
         'profile_image' => 'nullable|mimes:jpeg,png,jpg,gif|max:2048',
     ],
@@ -223,5 +253,26 @@ public function update(Request $request)
         }
 
 
-         
+        //   public function varifyemail(Request $request)
+        //     {
+        //         $email1 = User::where('email', $request->email)->get();
+        //         if($email1->email > 0)
+        //         {
+        //             echo json_encode(false);
+        //         } else {
+        //             echo json_encode(true);
+        //         }
+        //     }
+
+        //     public function varifycontact(Request $request)
+        //     {
+        //         $contact1 = User::where('phone', $request->phone)->get();
+        //         if($contact1->phone > 0)
+        //         {
+        //             echo json_encode(false);
+        //         } else { 
+        //             echo json_encode(true);
+        //         }
+        //     }
+
 }

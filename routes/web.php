@@ -38,11 +38,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/fetch-states/{id}',[ProfilesController::class,'fetchStates']);
     Route::get('/fetch-cities/{id}',[ProfilesController::class,'fetchCities']);
+
 });
+Route::get('/thank-you', [UserController::class, 'thankYou'])->name('thank-you');
+
+Route::get('/expired', function () {
+    return 'Verification link has expired.';
+})->name('expired');
 
 Route::get('/verify-email/{token}', [UserController::class, 'verifyEmail'])->name('verify.email');
 
-// Route::get('varifymail',[UserController::class, 'varifyemail']);
 Route::get('varifycontact',[UserController::class, 'varifycontact']);
 
 Route::any('/', [DashboardController::class, 'home'])->name('/');
@@ -71,8 +76,8 @@ Route::middleware(['admin'])->group(function () {
 
 Route::get('/register', [UserController::class, 'create'])->name('/register');
 Route::post('/register', [UserController::class, 'registerpost'])->name('/register');
-Route::get('/login', [UserController::class, 'login'])->name('/login');
-Route::post('/login', [UserController::class, 'loginpost'])->name('/login');
+Route::get('/login', [UserController::class, 'login'])->name('/login')->middleware('guest');;
+Route::post('/login', [UserController::class, 'loginpost'])->name('/login')->middleware('guest');;
 Route::any('/logout', [UserController::class, 'logout'])->name('/logout');
 Route::any('/filter', [UserController::class, 'filter']);
 Route::get('/dashboard/list', [DashboardController::class, 'list'])->name('/dashboard/list');
@@ -85,12 +90,12 @@ Route::post('/check-phone', [UserController::class, 'checkPhone']);
 // Route::get('/dashboard', [DashboardController::class, 'index'])->name('/dashboard')->middleware('auth');
 // Route::get('/user/dashboard', [UserDashController::class, 'index'])->name('/dashboard')->middleware('auth');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/user/dashboard/profile/index', [ProfilesController::class, 'index'])->name('profile.index');
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+//     Route::get('/user/dashboard/profile/index', [ProfilesController::class, 'index'])->name('profile.index');
 
-    Route::get('/user/dashboard', [UserDashController::class, 'index'])->name('user.dashboard');
-});
+//     Route::get('/user/dashboard', [UserDashController::class, 'index'])->name('user.dashboard');
+// });
 
 
 Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
