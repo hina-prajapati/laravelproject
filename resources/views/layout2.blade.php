@@ -25,6 +25,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Anton&family=Audiowide&family=Barlow+Condensed:wght@700;800&family=Covered+By+Your+Grace&family=DM+Sans:wght@400;500;700&family=Dancing+Script:wght@500;600;700&family=Jost:wght@200;300;400;500;600;700;800;900&family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500;1,600;1,700;1,800&family=Kaushan+Script&family=Lato:wght@300;900&family=Libre+Franklin:wght@400;500&family=Open+Sans:wght@300;400;500;800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,500&family=Quicksand:wght@300;400;500;700&family=Rajdhani:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700;800&family=Roboto+Condensed:wght@300;400;700&family=Roboto:wght@300;400;500;700&family=Russo+One&family=Saira+Extra+Condensed:wght@400;500&family=Shadows+Into+Light&family=Signika:wght@300;400;500;600;700&family=Sora:wght@300;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
         rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
     <link href="/assets2/css/all.min.css" rel="stylesheet">
     <link href="/assets2/css/style.min.css" rel="stylesheet">
@@ -1211,7 +1212,13 @@ function submitForm() {
     <script src="/assets2/js/owl.carousel.min.js"></script>
     <script src="/assets2/js/jquery.fancybox.min.js"></script>
 
-
+    <!-- Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script type="text/javascript">
+    jQuery(function() {
+        jQuery('.select2').select2();
+    });
+    </script>
     <script>
     $(document).ready(function() {
         $('.upcomin-matches').owlCarousel({
